@@ -1,0 +1,45 @@
+import pygame, sys, random
+pygame.init()
+
+background = pygame.transform.scale(pygame.image.load('assets/background-day.png'), (432, 768))
+#ground:
+ground = pygame.transform.scale(pygame.image.load('assets/base.png'), (504 , 768))
+ground_x = 0
+ground_move = -1
+#bird:
+bird = pygame.transform.scale2x(pygame.image.load('assets/bluebird-downflap.png'))
+bird_rect = bird.get_rect(center= (100 ,350))
+#pipe:
+pipe = pygame.transform.scale2x(pygame.image.load('assets/pipe-green.png'))
+pipe_rect = pipe.get_rect(center = (432, 300))
+#Variables:
+gravity = 0.5
+bird_move = 0
+
+#Main:
+WHITE = (255, 255, 255)
+width, high = 432, 768
+screen = pygame.display.set_mode((width, high))
+clock = pygame.time.Clock()
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            quit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                bird_move = 0
+                bird_move -= 12
+    screen.fill(WHITE)
+    screen.blit(background, (0, 0))
+    screen.blit(ground, (ground_x, 700))
+    screen.blit(ground, (ground_x + 432, 700))
+    ground_x += ground_move
+    if ground_x <= -432:
+        ground_x = 0
+    screen.blit(bird, bird_rect)
+    bird_move += gravity
+    bird_rect.centery += bird_move
+    screen.blit(pipe, pipe_rect)
+    pygame.display.flip()
+    clock.tick(120)
